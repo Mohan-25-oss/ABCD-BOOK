@@ -9,6 +9,13 @@
         box-sizing: border-box;
         }
 
+        body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background-color: white;
+        }
+
         .button-container {
         display: flex;
         flex-wrap: wrap;
@@ -33,12 +40,24 @@
         transform: scale(1.1);
         }
 
-        #displayLetter {
-        font-size: 250px;
-        text-align: center;
-        color: white;
-        margin-top: 50px;
+        #displayArea {
         display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: transparent;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 999;
+        }
+
+        #displayLetter {
+        font-size: 100px;
+        color: white;
+        margin-bottom: 30px;
         }
 
         .footer {
@@ -46,7 +65,6 @@
         font-size: 18px;
         font-weight: bold;
         padding: 20px;
-        margin-top: 40px;
         background: linear-gradient(to right, #00c6ff, #0072ff);
         color: white;
         width: 100%;
@@ -60,12 +78,13 @@
         }
 
         @media (max-width: 768px) {
-        #displayLetter {
-            font-size: 140px;
-        }
         .color-button {
             padding: 15px 20px;
             font-size: 20px;
+        }
+
+        #displayLetter {
+            font-size: 140px;
         }
         }
     </style>
@@ -75,8 +94,11 @@
     <!-- বাটনের কনটেইনার -->
     <div class="button-container" id="buttons"></div>
 
-    <!-- বড় করে অক্ষর দেখানোর জায়গা -->
+    <!-- অক্ষর ও বাটন দেখানোর জন্য -->
+    <div id="displayArea">
     <div id="displayLetter"></div>
+    <button id="singleButton" class="color-button"></button>
+    </div>
 
     <!-- ফুটার -->
     <footer class="footer" id="pageFooter">
@@ -93,7 +115,9 @@
     ];
 
     const buttonsContainer = document.getElementById("buttons");
-    const display = document.getElementById("displayLetter");
+    const displayArea = document.getElementById("displayArea");
+    const displayLetter = document.getElementById("displayLetter");
+    const displayBtn = document.getElementById("singleButton");
     const footer = document.getElementById("pageFooter");
 
     for (let i = 0; i < 26; i++) {
@@ -103,23 +127,25 @@
         button.style.backgroundColor = colors[i];
 
         button.onclick = function () {
-        // ব্যাকগ্রাউন্ড পরিবর্তন
+        // ব্যাকগ্রাউন্ড সেট
         document.body.style.backgroundColor = colors[i];
 
-        // সব বাটন ও ফুটার হাইড করো
+        // সব কিছু লুকাও
         buttonsContainer.style.display = "none";
         footer.style.display = "none";
 
-        // কেবল ক্লিক করা অক্ষর দেখাও
-        display.innerText = letters[i];
-        display.style.display = "block";
+        // শুধু অক্ষর ও সেই বাটন দেখাও
+        displayLetter.innerText = letters[i];
+        displayBtn.innerText = letters[i];
+        displayBtn.style.backgroundColor = colors[i];
+        displayArea.style.display = "flex";
 
-        // ১০ সেকেন্ড পরে আবার সব আগের মতো
+        // ১০ সেকেন্ড পর সবকিছু আগের মতো
         setTimeout(() => {
-            display.style.display = "none";
+            displayArea.style.display = "none";
             buttonsContainer.style.display = "flex";
             footer.style.display = "block";
-            document.body.style.backgroundColor = "white"; // রিসেট চাইলে
+            document.body.style.backgroundColor = "white";
         }, 10000);
         };
 
