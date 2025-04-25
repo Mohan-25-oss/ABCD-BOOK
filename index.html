@@ -1,0 +1,73 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Alphabet Colors</title>
+        <style>
+            .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px;
+            justify-content: center;
+            }
+            .color-button {
+            padding: 20px 30px; /* 👈 এখানে প্যাডিং বাড়ানো হয়েছে */
+            font-size: 24px;     /* 👈 ফন্ট সাইজ বড় করা হয়েছে */
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px; /* 👈 কোণ গোল করা হয়েছে */
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* 👈 হালকা ছায়া */
+            transition: transform 0.2s ease; /* 👈 ক্লিক অ্যানিমেশন */
+            }
+            .color-button:hover {
+            transform: scale(1.1); /* 👈 হোভার করলে একটু বড় দেখাবে */
+            }
+            #displayLetter {
+            font-size: 350px;
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            }
+        </style>
+        
+        </head>
+        <body>
+
+        <!-- বাটনের কনটেইনার -->
+        <div class="button-container" id="buttons"></div>
+
+        <!-- অক্ষর দেখানোর জায়গা -->
+        <div id="displayLetter"></div>
+
+        <script>
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const colors = [
+            "red", "green", "blue", "orange", "purple", "pink", "brown", "teal",
+            "navy", "maroon", "gray", "gold", "lime", "cyan", "magenta", "salmon",
+            "olive", "coral", "indigo", "crimson", "tomato", "plum", "chocolate",
+            "skyblue", "darkgreen", "slateblue"
+            ];
+
+            const buttonsContainer = document.getElementById("buttons");
+            const display = document.getElementById("displayLetter");
+
+            // ২৬টি বাটন তৈরি
+            for (let i = 0; i < 26; i++) {
+            const button = document.createElement("button");
+            button.innerText = letters[i];
+            button.className = "color-button";
+            button.style.backgroundColor = colors[i];
+            button.onclick = function () {
+                document.body.style.backgroundColor = colors[i];
+                display.innerText = letters[i];
+            };
+            buttonsContainer.appendChild(button);
+            }
+        </script>
+
+        </body>
+        </html>
