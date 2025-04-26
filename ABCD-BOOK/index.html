@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Alphabet Colors</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: white;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px;
+            justify-content: center;
+        }
+
+        .color-button {
+            padding: 20px 30px;
+            font-size: 24px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .color-button:hover {
+            transform: scale(1.1);
+        }
+
+        #displayArea {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: transparent;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 999;
+        }
+
+        #displayLetter {
+            font-size: 100px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 20px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-top: 3px solid #ffffff66;
+            box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer .highlight {
+            color: yellow;
+        }
+
+        .navigation-buttons {
+            position: fixed;
+            bottom: 80px; /* Space between nav buttons and footer */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 999;
+        }
+
+        .nav-button {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 25px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .color-button {
+                padding: 15px 20px;
+                font-size: 20px;
+            }
+
+            #displayLetter {
+                font-size: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- বাটনের কনটেইনার -->
+<div class="button-container" id="buttons"></div>
+
+<!-- অক্ষর ও বাটন দেখানোর জন্য -->
+<div id="displayArea">
+    <div id="displayLetter"></div>
+    <button id="singleButton" class="color-button"></button>
+</div>
+
+<!-- Navigation Buttons (Left & Right) -->
+<div class="navigation-buttons">
+    <button id="prevBtn" class="nav-button">⬅️ পূর্বে</button>
+    <button id="nextBtn" class="nav-button">পরবর্তী ➡️</button>
+</div>
+
+<!-- ফুটার -->
+<footer class="footer" id="pageFooter">
+    &copy; 2025 <span class="highlight">Mon Mohan Halder</span>. All rights reserved.
+</footer>
+
+<script>
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const colors = [
+        "red", "green", "blue", "orange", "purple", "pink", "brown", "teal",
+        "navy", "maroon", "gray", "gold", "lime", "cyan", "magenta", "salmon",
+        "olive", "coral", "indigo", "crimson", "tomato", "plum", "chocolate",
+        "skyblue", "darkgreen", "slateblue"
+    ];
+
+    const buttonsContainer = document.getElementById("buttons");
+    const displayArea = document.getElementById("displayArea");
+    const displayLetter = document.getElementById("displayLetter");
+    const displayBtn = document.getElementById("singleButton");
+    const footer = document.getElementById("pageFooter");
+
+    let currentIndex = 0; // Starting index of the alphabet
+
+    // Function to add Bengali voice
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'bn-BD'; // Set the language to Bengali (Bangladesh)
+        speechSynthesis.speak(utterance);
+    }
+
+    // Create buttons for A-Z letters
+    for (let i = 0; i < 26; i++) {
+        const button = document.createElement("button");
+        button.innerText = letters[i];
+        button.className = "color-button";
+        button.style.backgroundColor = colors[i];
+
+        button.onclick = function () {
+            // ব্যাকগ্রাউন্ড সেট
+            document.body.style.backgroundColor = colors[i];
+
+            // সব কিছু লুকাও
+            buttonsContainer.style.display = "none";
+            footer.style.display = "none";
+
+            // শুধু অক্ষর ও সেই বাটন দেখাও
+            displayLetter.innerText = letters[i];
+            displayBtn.innerText = letters[i];
+            displayBtn.style.backgroundColor = colors[i];
+            displayArea.style.display = "flex";
+
+            // বাংলা ভয়েসে অক্ষরটি উচ্চারণ করানো
+            speak(letters[i]);
+
+            // ১০ সেকেন্ড পর সবকিছু আগের মতো
+            // setTimeout(() => {
+            //     displayArea.style.display = "none";
+            //     buttonsContainer.style.display = "flex";
+            //     footer.style.display = "block";
+            //     document.body.style.backgroundColor = "white";
+            // }, 10000);
+        };
+
+        buttonsContainer.appendChild(button);
+    }
+
+    // Function to handle Left and Right button navigation
+    function showLetterAtIndex(index) {
+        document.body.style.backgroundColor = colors[index];
+        displayLetter.innerText = letters[index];
+        displayBtn.innerText = letters[index];
+        displayBtn.style.backgroundColor = colors[index];
+        // বাংলা ভয়েসে অক্ষরটি উচ্চারণ করানো
+        speak(letters[index]);
+    }
+
+    // Left button (prev)
+    document.getElementById("prevBtn").onclick = function() {
+        currentIndex = (currentIndex - 1 + letters.length) % letters.length;  // Wrap around the alphabet
+        showLetterAtIndex(currentIndex);
+        vibrate(); // Trigger vibration
+    };
+
+    // Right button (next)
+    document.getElementById("nextBtn").onclick = function() {
+        currentIndex = (currentIndex + 1) % letters.length;  // Wrap around the alphabet
+        showLetterAtIndex(currentIndex);
+        vibrate(); // Trigger vibration
+    };
+
+    // Vibration effect for mobile devices
+    function vibrate() {
+        if (navigator.vibrate) {
+            navigator.vibrate(100); // Vibrate for 100ms
+        }
+    }
+
+    // Initially show the first letter (A)
+    showLetterAtIndex(currentIndex);
+</script>
+
+</body>
+</html>
